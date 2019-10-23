@@ -1,0 +1,1 @@
+g++ ../../Shared/MQTT_Mosquitto.cpp -lmosquitto -o mqttlinux -v 

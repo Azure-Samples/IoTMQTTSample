@@ -1,0 +1,6 @@
+// Once Mosquitto is installed, the tool mosquitto_pub can be used from cmd line
+// this command will send a message to the IoTHub
+// you need to generate SAS Token for the Hub and the device you look at
+
+mosquitto_pub -d -h <MyHub>.azure-devices.net -p 8883 -i <MyDevice> -u "<MyHub>.azure-devices.net/<MyDevice>/?api-version=2018-06-30" -P "<SAS Token for <MyDevice>" -t "devices/<MyDevice>/messages/events/" -m "hello world" -V mqttv311 --cafile <Certificate.pem> -q 1 
+

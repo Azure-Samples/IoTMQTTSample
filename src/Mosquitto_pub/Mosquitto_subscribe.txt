@@ -1,0 +1,5 @@
+// Once Mosquitto is installed, the tool mosquitto_pub can be used from cmd line
+// mosquitto_pub command to subscribe to any message in the Hub
+// you need to generate SAS Token for the Hub and the device you look at
+
+mosquitto_sub -d -h <MyHUB>.azure-devices.net -p 8883 -i EM_MXC3166 -u "<MyHUB>.azure-devices.net/<DeviceId>/?api-version=2018-06-30" -P "SharedAccessSignature sr=<MyHUB>.azure-devices.net%2Fdevices%2F<DeviceId>&sig=T768rIqQVq6zVBL7FeWAYqak7tTeslu%MCMG639zX492o%3D&se=1568424250" -t "#"  -V mqttv311 --cafile IoTHubRootCA_Baltimore.pem -q 1
