@@ -4,7 +4,8 @@ languages:
 - c
 products:
 - azure-iot-hub
-description: Using MQTT with Azure IoTHub without SDK
+name: "IoT MQTT Samples"
+description: "Using MQTT with Azure IoTHub without SDK"
 urlFragment: "IoTMQTTSample"
 ---
 
