@@ -14,6 +14,8 @@ urlFragment: "IoTMQTTSample"
 In this set of samples, we will show how to connect and send messages to an Azure IoT Hub without using the Azure IoT SDK. This approach is useful when you use constrained device who don’t have enough memory to support the Azure IoT C SDK. These sample code uses the Eclipse Mosquitto library to send messages directly to the IoTHub via the MQTT Protocol.
 This repository contains sample for [Windows](https://github.com/Azure-Samples/IoTMQTTSample/tree/master/src/Windows) and [Linux](https://github.com/Azure-Samples/IoTMQTTSample/tree/master/src/Linux) and a couple of [sample command](https://github.com/Azure-Samples/IoTMQTTSample/tree/master/src/Mosquitto_pub) to use with mosquitto_pub tool (tool included in the Mosquitto library package).
 
+Find also a sample using [MicroPython](https://github.com/Azure-Samples/IoTMQTTSample/tree/master/src/MicroPython) and umqtt library, this sample run on [ESP32](https://github.com/Azure-Samples/ESP-Samples) and demonstrate how to send telemetry message and receive messages from cloud.
+
 ## Contents
 
 Below is the file contents of this repository. 
@@ -31,6 +33,9 @@ Below is the file contents of this repository.
 ## Prerequisites
 
 To be able to test these samples you need an Azure IoTHub and installing Eclipse Mosquitto Library.
+
+
+For MicroPython, follow the steps in this [readme file](https://github.com/Azure-Samples/IoTMQTTSample/tree/master/src/MicroPython/readme.md) to flash MicroPython on your ESP32 install umqtt library and use it for connecting Azure IoT Hub.
 
 ### Creating an Azure IoT Hub
 
