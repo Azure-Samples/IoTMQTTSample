@@ -1,39 +1,41 @@
 // Access IoTHub via MQTTT Protocol with mosquitto library (no IoT SDK used)
+// Use PnP Convention 
 //
 
 #include <cstdio>
 #include <fstream>
+#include <thread>
+#include <future>
+
 #include "mosquitto.h"
 
 #include <windows.h>
 
 // CONNECTION information to complete
-#define IOTHUBNAME "<your IoT Hub name>"
-#define DEVICEID "<your device Id>"
+#define IOTHUBNAME "[yourIoTHub]"
+#define DEVICEID "[yourDevice]"
 #define PWD "SharedAccessSignature sr=[yourIoTHub].azure-devices.net%2Fdevices%2F[nameofyourdevice]&sig=[tokengeneratedforyourdevice]"
+// You need to generate a SAS Token valid for couple of hours, 
+// use IoT  Hub portal or IoTExplore to generate one
 
 #define CERTIFICATEFILE "IoTHubRootCA_Baltimore.pem"
 
 // computed Host Username and Topic
-#define USERNAME IOTHUBNAME ".azure-devices.net/" DEVICEID "/?api-version=2019-07-01-preview"
+// #define USERNAME IOTHUBNAME ".azure-devices.net/" DEVICEID "/?api-version=2019-07-01-preview"
+// Updated API version for Pnp preview refresh summer 2020
+#define USERNAME IOTHUBNAME ".azure-devices.net/" DEVICEID "/?api-version=2020-05-31-preview&model-id=dtmi:com:example:Thermostat;1"
 #define PORT 8883
 #define HOST IOTHUBNAME ".azure-devices.net"
-#define DEVICE_CAPABILITIES_MESSAGE "devices/" DEVICEID "/messages/events/%24.ifid=urn%3aazureiot%3aModelDiscovery%3aModelInformation%3a1&%24.ifname=urn_azureiot_ModelDiscovery_ModelInformation&%24.schema=modelInformation&%24.ct=application%2fjson"
-#define DEVICETWIN_PATCH_MESSAGE "$iothub/twin/PATCH/properties/reported/?$rid=patch_temp"
-#define DEVICE_TELEMETRY_MESSAGE "devices/" DEVICEID "/messages/events/%24.ifid=urn%3amxchip%3abuilt_in_sensors%3a1&%24.ifname=sensor&%24.schema=Temperature&%24.ct=application%2fjson"
 
-// Note
-// Certificate
-//  Server certs available here for download: https://raw.githubusercontent.com/Azure/azure-iot-sdk-c/master/certs/certs.c
-// 
-// PWD
-//  Generated via Azure CLI, Device explorer or VSCode Azure IoT extension (Generate SAS Token for device)
-//  az iot hub generate-sas-token -d EM_MXC3166 -n EricmittHub
-// 
-// Username
-//  Username format for MQTT connection to Hub: $hub_hostname/$device_id/?api-version=2018-06-30"
+// MQTT Topics
+#define	DEVICE_TWIN_DESIRED_PROP_RES_TOPIC "$iothub/twin/PATCH/properties/desired/#"
+#define DEVICE_TWIN_RES_TOPIC "$iothub/twin/res/#"
+#define DIRECT_METHOD_TOPIC "$iothub/methods/POST/#"
+#define TOPIC "devices/" DEVICEID "/messages/events/"
+#define DEVICETWIN_MESSAGE_PATCH "$iothub/twin/PATCH/properties/reported/?$rid=patch_temp"
 
 
+static struct mosquitto* mosq;
 
 int mosquitto_error(int rc, const char* message = NULL)
 {
@@ -48,68 +50,37 @@ int mosquitto_error(int rc, const char* message = NULL)
 	return rc;
 }
 
-void publish_next_packet(struct mosquitto* mosq, int msgId)
+static void SendMaxTemperatureSinceReboot()
 {
-	const char* msg = NULL;
-	const char* topic = NULL;
-	switch (msgId)
-	{
-		case 0:  // Let Azure IoT know about this device capabilities, by publishing a PnP Device Model Telemetry message
-			printf("\r\nPublishing device capabilities....\r\n");
-			topic = DEVICE_CAPABILITIES_MESSAGE;
-			msg = "{"
-					"\"modelInformation\":"
-					"{"
-						"\"capabilityModelId\":\"urn:mxchip:sample_device:1\","
-						"\"interfaces\":"
-						"{"
-							"\"urn_azureiot_ModelDiscovery_ModelInformation\":\"urn:azureiot:ModelDiscovery:ModelInformation:1\","
-							"\"urn_azureiot_Client_SDKInformation\":\"urn:azureiot:Client:SDKInformation:1\","
-							"\"deviceinfo\":\"urn:azureiot:DeviceManagement:DeviceInformation:1\","
-							"\"sensor\":\"urn:mxchip:built_in_sensors:1\""
-						"}"
-					"}"
-				"}";
-			break;
-
-		case 1: 
-			printf("\r\nPublishing device twin properties....\r\n");
-			topic = DEVICETWIN_PATCH_MESSAGE;
-			msg = "{"
-					"\"$iotin:urn_azureiot_Client_SDKInformation\":"
-					"{"
-						"\"language\":{\"value\":\"C\"},"
-						"\"version\":{\"value\":\"0.0.1\"},"
-						"\"vendor\":{\"value\":\"umthengisi\"}"
-					"},"
-					"\"$iotin:deviceinfo\":"
-					"{"
-						"\"manufacturer\":{\"model\":\"imodeli\"},"
-						"\"swVersion\":{\"value\":\"0.0.1\"}"
-					"}"
-				"}";
-			break;
-
-		case 2:
-			printf("\r\nPublishing device telemetry....\r\n");
-			topic = DEVICE_TELEMETRY_MESSAGE;
-			msg = "{ \"Temperature\": 32.000 }";
-			break;
-
-		default:
-			printf("\r\nDone....\r\n");
-			mosquitto_loop_stop(mosq, false);
-			mosquitto_disconnect(mosq);
-			return;
-	}
-
-	msgId++;
-	int rc = mosquitto_publish(mosq, &msgId, topic, (int)strlen(msg), msg, 1, false);
+	char msg[] = "{\"maxTempSinceLastReboot\": 42.500}";
+	int msgId = rand();
+	int rc = mosquitto_publish(mosq, &msgId, DEVICETWIN_MESSAGE_PATCH, sizeof(msg) - 1, msg, 1, true);
 	if (rc != MOSQ_ERR_SUCCESS)
 	{
-		mosquitto_error(rc);
+		printf("Error: %s\r\n", mosquitto_strerror(rc));
 	}
-	printf("Publish returned OK\r\n");
+}
+
+static void SendTargetTemperatureReport(double desiredTemp, int responseStatus, int version, const char* description)
+{
+	char msg[] = "{\"targetTemperature\":{\"value\":38,\"ac\":200,\"av\":23,\"ad\":\"success\"}}";
+	int msgId = rand();
+	int rc = mosquitto_publish(mosq, &msgId, DEVICETWIN_MESSAGE_PATCH, sizeof(msg) - 1, msg, 1, true);
+	if (rc != MOSQ_ERR_SUCCESS)
+	{
+		printf("Error: %s\r\n", mosquitto_strerror(rc));
+	}
+}
+
+void Thermostat_SendCurrentTemperature()
+{
+	char msg[] = "{\"temperature\":25}";
+	int msgId = rand();
+	int rc = mosquitto_publish(mosq, &msgId, TOPIC, sizeof(msg) - 1, msg, 1, true);
+	if (rc != MOSQ_ERR_SUCCESS)
+	{
+		printf("Error: %s\r\n", mosquitto_strerror(rc));
+	}
 }
 
 // Callback functions
@@ -122,14 +93,47 @@ void connect_callback(struct mosquitto* mosq, void* obj, int result)
 	}
 	else
 	{
-		publish_next_packet(mosq, 0);
+		SendMaxTemperatureSinceReboot();
+		SendTargetTemperatureReport(-273,200,25,"targetTemp");
 	}
 }
 
 void publish_callback(struct mosquitto* mosq, void* userdata, int msgId)
 {
-	printf("Publish OK. mid=%d\r\n", msgId);
-	publish_next_packet(mosq, msgId);
+	printf("Publish OK. mid=%d userData: %s\r\n", msgId, (char*)userdata);
+	Sleep(2000);
+	Thermostat_SendCurrentTemperature();
+}
+
+void message_callback(struct mosquitto* mosq, void* obj, const struct mosquitto_message* message)
+{
+	printf("Message received: %s payload: %s \r\n", message->topic, (char*)message->payload);
+	
+	if (strncmp(message->topic, "$iothub/methods/POST/getMaxMinReport/?$rid=1",37) == 0)
+	{
+		char* pch;
+		char* context;
+		int msgId = 0;
+		pch = strtok_s((char*)message->topic, "=",&context);
+		while (pch != NULL)
+		{
+			pch = strtok_s(NULL, "=", &context);
+			if (pch != NULL) {
+				char * pEnd;
+				msgId = strtol(pch,&pEnd,16 );
+			}
+		}
+		char topic[64];
+		sprintf_s(topic, "$iothub/methods/res/200/?$rid=%d", msgId);
+		char msg[] = "{}";
+		printf("rid = %d\n", msgId);
+		int rc = mosquitto_publish(mosq, &msgId, topic, sizeof(msg) - 1, msg, 1, true);
+		if (rc != MOSQ_ERR_SUCCESS)
+		{
+			printf("Error: %s\r\n", mosquitto_strerror(rc));
+		}
+		delete pch;
+	}
 }
 
 int main()
@@ -141,11 +145,12 @@ int main()
 	mosquitto_lib_init();
 
 	// create the mosquito object
-	struct mosquitto* mosq = mosquitto_new(DEVICEID, false, NULL);
+	 mosq = mosquitto_new(DEVICEID, false, NULL);
 
 	// add callback functions
 	mosquitto_connect_callback_set(mosq, connect_callback);
 	mosquitto_publish_callback_set(mosq, publish_callback);
+	mosquitto_message_callback_set(mosq, message_callback);
 
 	// set mosquitto username, password and options
 	mosquitto_username_pw_set(mosq, USERNAME, PWD);
@@ -184,9 +189,23 @@ int main()
 
 	printf("Connect returned OK\r\n");
 
+	
+	rc = mosquitto_subscribe(mosq, NULL, DEVICE_TWIN_RES_TOPIC, 0);
+	if (rc != MOSQ_ERR_SUCCESS)
+	{
+		return mosquitto_error(rc);
+	}
+	rc = mosquitto_subscribe(mosq, NULL, DIRECT_METHOD_TOPIC, 0);
+	if (rc != MOSQ_ERR_SUCCESS)
+	{
+		return mosquitto_error(rc);
+	}
+	rc = mosquitto_subscribe(mosq, NULL, DEVICE_TWIN_DESIRED_PROP_RES_TOPIC, 0);
+	if (rc != MOSQ_ERR_SUCCESS)
+	{
+		return mosquitto_error(rc);
+	}
 
-	// according to the mosquitto doc, a call to loop is needed when dealing with network operation
-	// see https://github.com/eclipse/mosquitto/blob/master/lib/mosquitto.h
 	printf("Entering Mosquitto Loop...\r\n");
 	mosquitto_loop_forever(mosq, -1, 1);
 	
