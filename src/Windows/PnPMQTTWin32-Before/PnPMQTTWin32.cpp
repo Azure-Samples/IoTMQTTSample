@@ -1,5 +1,5 @@
 // Access IoTHub via MQTTT Protocol with mosquitto library (no IoT SDK used)
-// Use PnP Convention 
+// Not using PnP Convention 
 //
 
 #include <cstdio>
