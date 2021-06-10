@@ -22,7 +22,6 @@
 
 // computed Host Username and Topic
 #define USERNAME IOTHUBNAME ".azure-devices.net/" DEVICEID "/?api-version=2019-07-01-preview"
-//#define USERNAME IOTHUBNAME ".azure-devices.net/" DEVICEID "/?api-version=2020-09-30"
 
 #define PORT 8883
 #define HOST IOTHUBNAME ".azure-devices.net"
