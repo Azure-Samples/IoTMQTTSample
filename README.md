@@ -56,10 +56,10 @@ This sample needs an IoT hub and a registered device. If you don't already have 
     az iot hub device-identity create --hub-name <your IoT Hub name> --device-id <your device id>
     ```
 
-1. [Retrieve your Device Connection String](https://docs.microsoft.com/en-us/cli/azure/ext/azure-cli-iot-ext/iot/hub/device-identity?view=azure-cli-latest#ext-azure-cli-iot-ext-az-iot-hub-device-identity-show-connection-string) using the Azure CLI
+1. [Retrieve your Device Connection String](https://docs.microsoft.com/cli/azure/iot/hub/device-identity/connection-string#az-iot-hub-device-identity-connection-string-show) using the Azure CLI
 
     ```bash
-    az iot hub device-identity show-connection-string --device-id <your device id> --hub-name <your IoT Hub name>
+    az iot hub device-identity connection-string show --device-id <your device id> --hub-name <your IoT Hub name>
     ```
 
     It should be in the format:
