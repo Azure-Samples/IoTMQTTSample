@@ -13,7 +13,19 @@ urlFragment: "IoTMQTTSample"
 
 This set of samples will demonstrate how to connect and send messages to an Azure IoT Hub without using the Azure IoT SDKs.
 
-Read the [Communicate with your IoT hub using the MQTT protocol](https://docs.microsoft.com/azure/iot-hub/iot-hub-mqtt-support) for detailed instructions on connecting your device to IoT Hub using MQTT without an SDK.
+Read the [Communicate with your IoT Hub using the MQTT protocol](https://docs.microsoft.com/azure/iot-hub/iot-hub-mqtt-support) for detailed instructions on connecting your device to IoT Hub using MQTT without an SDK.
+
+## Why use an Azure IoT Device SDK?
+
+Azure provides a set of SDKs across multiple languages for connecting device to [IoT Hub](https://docs.microsoft.com/azure/iot-hub/iot-concepts-and-iot-hub) and [DPS](https://docs.microsoft.com/azure/iot-dps). The advantages of using an [Azure IoT Device SDK](https://docs.microsoft.com/azure/iot-develop/about-iot-sdks) over building a custom connection layer are outlined below:
+
+| | Custom connection layer | Azure IoT Device SDKs |
+| :-- | :-- | :-- |
+| **Support** | Need to support and document your solution | Access to Microsoft support (GitHub, Microsoft Q&A, Microsoft technical documentation, Customer Support teams) |
+| **New Features** | Need to manually add new Azure features | Can immediately take advantage of new features added |
+| **Investment** | Invest hundreds of hours of embedded development to design, build, test, and maintain a custom version | Can take advantage of free, open-source tools. The only cost associated with the SDKs is the learning curve. |
+
+For more information, refer to the [Overview of Azure IoT Device SDKs](https://docs.microsoft.com/azure/iot-develop/about-iot-sdks).
 
 ## Samples in this repo
 
@@ -22,10 +34,6 @@ This repository contains the following samples:
 * [Mosquitto on Linux](src/Linux)
 * [Mosquitto_pub CLI](src/Mosquitto_pub)
 * [Python](src/Python)
-
-## Trusted root certificate
-
-Many of the samples depend on the [DigiCert Baltimore Root Certificate](IoTHubRootCA_Baltimore.pem) which is hosted in this repository.
 
 ## Prerequisites
 
