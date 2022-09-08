@@ -3,9 +3,9 @@
 
 ## Setup
 1. Open main.py and edit the following fields with the correct IoT Hub and device information
-    1. IOT_HUB_HOSTNAME
-    1. IOT_HUB_DEVICE_ID
-    1. IOT_HUB_SAS_KEY
+    * IOT_HUB_HOSTNAME
+    * IOT_HUB_DEVICE_ID
+    * IOT_HUB_SAS_KEY
 
 2. Install Paho MQTT
 
