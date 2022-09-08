@@ -1,12 +1,12 @@
 ---
 page_type: sample
 languages:
-- c, python
+  - c
+  - python
 products:
-- azure-iot-hub
+  - azure-iot-hub
 name: "IoT MQTT Samples"
 description: "Using MQTT with Azure IoTHub without SDK"
-urlFragment: "IoTMQTTSample"
 ---
 
 # Using MQTT with Azure IoT Hub without an SDK
