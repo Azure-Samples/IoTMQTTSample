@@ -4,8 +4,8 @@
 ## Assumptions
 1. Python is [installed](https://www.python.org/downloads)
 1. Pip is [installed](https://pip.pypa.io/en/stable/installation)
-1. An IoT Hub has been [created](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal)
-1. A device has been [registered](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal#register-a-new-device-in-the-iot-hub) using Symmetric key authentication
+1. An IoT Hub has been [created](https://docs.microsoft.com/azure/iot-hub/iot-hub-create-through-portal)
+1. A device has been [registered](https://docs.microsoft.com/azure/iot-hub/iot-hub-create-through-portal#register-a-new-device-in-the-iot-hub) using Symmetric key authentication
 
 ## Setup
 1. Open main.py and edit the following fields with the correct IoT Hub and device information
