@@ -1,129 +1,93 @@
 ---
 page_type: sample
 languages:
-- c
+  - c
+  - python
 products:
-- azure-iot-hub
+  - azure-iot-hub
 name: "IoT MQTT Samples"
 description: "Using MQTT with Azure IoTHub without SDK"
-urlFragment: "IoTMQTTSample"
 ---
 
-# Using MQTT with Azure IoTHub without SDK
+# Using MQTT with Azure IoT Hub without an SDK
 
-In this set of samples, we will show how to connect and send messages to an Azure IoT Hub without using the Azure IoT SDK. This approach is useful when you use constrained device who don’t have enough memory to support the Azure IoT C SDK. These sample code uses the Eclipse Mosquitto library to send messages directly to the IoTHub via the MQTT Protocol.
-This repository contains sample for [Windows](https://github.com/Azure-Samples/IoTMQTTSample/tree/master/src/Windows) and [Linux](https://github.com/Azure-Samples/IoTMQTTSample/tree/master/src/Linux) and a couple of [sample command](https://github.com/Azure-Samples/IoTMQTTSample/tree/master/src/Mosquitto_pub) to use with mosquitto_pub tool (tool included in the Mosquitto library package).
+This set of samples will demonstrate how to connect and send messages to an Azure IoT Hub without using the Azure IoT SDKs.
 
-Find also a sample using [MicroPython](https://github.com/Azure-Samples/IoTMQTTSample/tree/master/src/MicroPython) and umqtt library, this sample run on [ESP32](https://github.com/Azure-Samples/ESP-Samples) and demonstrate how to send telemetry message and receive messages from cloud.
+Read the [Communicate with your IoT Hub using the MQTT protocol](https://docs.microsoft.com/azure/iot-hub/iot-hub-mqtt-support) for detailed instructions on connecting your device to IoT Hub using MQTT without an SDK.
 
-## Contents
+## Why use an Azure IoT Device SDK?
 
-Below is the file contents of this repository. 
+Azure provides a set of SDKs across multiple languages for connecting device to [IoT Hub](https://docs.microsoft.com/azure/iot-hub/iot-concepts-and-iot-hub) and [DPS](https://docs.microsoft.com/azure/iot-dps). The advantages of using an [Azure IoT Device SDK](https://docs.microsoft.com/azure/iot-develop/about-iot-sdks) over building a custom connection layer are outlined below:
 
-| File/folder                  | Description                                |
-|------------------------------|--------------------------------------------|
-| `src`                        | Sample source code.
-| `.gitignore`                 | Defines what to ignore at commit time.     |
-| `README.md`                  | This README file.                          |
-| `LICENSE`                    | The license for the sample.                |
-| `SECURITY.md`                | Security information                       |
-| `CODE_OF_CONDUCT.md`         | Microsoft code of conduct for contribution |
-| `IoTHubRootCA_Baltimore.pem` | certificate used in these samples          |
+| | Custom connection layer | Azure IoT Device SDKs |
+| :-- | :-- | :-- |
+| **Support** | Need to support and document your solution | Access to Microsoft support (GitHub, Microsoft Q&A, Microsoft technical documentation, Customer Support teams) |
+| **New Features** | Need to manually add new Azure features | Can immediately take advantage of new features added |
+| **Investment** | Invest hundreds of hours of embedded development to design, build, test, and maintain a custom version | Can take advantage of free, open-source tools. The only cost associated with the SDKs is the learning curve. |
+
+For more information, refer to the [Overview of Azure IoT Device SDKs](https://docs.microsoft.com/azure/iot-develop/about-iot-sdks).
+
+## Samples in this repo
+
+This repository contains the following samples:
+* [Mosquitto on Windows](src/Windows)
+* [Mosquitto on Linux](src/Linux)
+* [Mosquitto_pub CLI](src/Mosquitto_pub)
+* [Python](src/Python)
 
 ## Prerequisites
 
-To be able to test these samples you need an Azure IoTHub and installing Eclipse Mosquitto Library.
-
-
-For MicroPython, follow the steps in this [readme file](https://github.com/Azure-Samples/IoTMQTTSample/tree/master/src/MicroPython/readme.md) to flash MicroPython on your ESP32 install umqtt library and use it for connecting Azure IoT Hub.
+To be able to test these samples will need:
+1. An Azure IoT Hub
+1. A registered device
+1. The Eclipse Mosquitto library (for some samples)
 
 ### Creating an Azure IoT Hub
 
-This sample needs an IoT hub and a registered device. If you don't already have an Azure IoT Hub, you can create one following these instructions:
+To create an Azure IoT Hub, [follow these steps](https://docs.microsoft.com/azure/iot-hub/iot-hub-create-through-portal).
 
-1. Install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) (or use the [Azure Cloud Shell](https://shell.azure.com/)) and use it to [create an Azure IoT Hub](https://docs.microsoft.com/en-us/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-create).
+### Registering a device
 
-    ```bash
-    az iot hub create --resource-group <your resource group> --name <your IoT Hub name>
-    ```
+To register a new device and retrieve the connection information, [follow these steps](https://docs.microsoft.com/azure/iot-hub/iot-hub-create-through-portal#register-a-new-device-in-the-iot-hub).
 
-    > Note that this operation may take a few minutes.
+## Mosquitto Prerequisites
 
-1. Add the IoT Extension to the Azure CLI, and then [register a device identity](https://docs.microsoft.com/en-us/cli/azure/ext/azure-cli-iot-ext/iot/hub/device-identity?view=azure-cli-latest#ext-azure-cli-iot-ext-az-iot-hub-device-identity-create)
+For Mosquitto samples, you will need:
+1. Install the Eclipse Mosquitto library
+1. Generate SAS token
+1. Complete the connection information
 
-    ```bash
-    az extension add --name azure-cli-iot-ext
-    az iot hub device-identity create --hub-name <your IoT Hub name> --device-id <your device id>
-    ```
+### Installing Eclipse Mosquitto
 
-1. [Retrieve your Device Connection String](https://docs.microsoft.com/cli/azure/iot/hub/device-identity/connection-string#az-iot-hub-device-identity-connection-string-show) using the Azure CLI
+The Eclipse Mosquitto library and documentation are available at <https://mosquitto.org>.
 
-    ```bash
-    az iot hub device-identity connection-string show --device-id <your device id> --hub-name <your IoT Hub name>
-    ```
-
-    It should be in the format:
-
-    `HostName=<your IoT Hub name>.azure-devices.net;DeviceId=<your device id>;SharedAccessKey=<some value>`
-
-## Installing Eclipse Mosquitto library
-
-The Eclipse Mosquitto library and documentation are available at <https://mosquitto.org/>.
-
-> Note: If you use the mosquitto.org installer, only the files (header and lib) are needed for these samples, you can uncheck the service installation.
+> **NOTE:** If you use the mosquitto.org installer, only the files (header and lib) are needed for these samples, you can uncheck the service installation.
 
 It is easier to use apt-get on Linux or vcpkg on Windows for installing Eclipse Mosquitto on your machine (see the corresponding readme in Linux and Windows directories).
 
-## Setup
+### Generate SAS token
 
-Once Eclipse Mosquitto is installed correctly on your machine, you will need to provide connection information and a security certificate.
+To get a valid IoT Hub SAS token, follow the instructions use the [generate-sas-token](https://docs.microsoft.com/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-generate-sas-token) function from AZ CLI.
 
-The certificate to use with these samples is located in this repo (IoTHubRootCA_Baltimore.pem)
-> Server certificates are available [here](https://raw.githubusercontent.com/Azure/azure-iot-sdk-c/master/certs/certs.c) for download. 
+> **NOTE:** By default the **SAS Token is valid for 60 minutes**. Use the --du parameter to increases the duration if needed.
 
-To get a valid IoT hub SAS Token, run this command in the Azure IoT Command line (see above for installing the Azure IoT extension to the Azure Command line)
+### Complete connection information
 
-`az iot hub generate-sas-token -d <DeviceId> -n <MyIoTHub>`
+You will need to provide connection information and a [root certificate](IoTHubRootCA_Baltimore.pem).
 
-> Note: That by default the **SAS Token is only valid for 60 min**. You can use the --du parameter to get the duration you need. You can also use Device Explorer to generate a SAS Token or VSCode Azure Iot Extension.
-
-> For more information on how to create SAS Token see [here](https://docs.microsoft.com/en-us/azure/iot-pnp/howto-generate-sas-token)
-
-Then in the code, complete the connection information:
+In the code, complete the connection information:
 
 ```c
-#define IOTHUBNAME <MyIoTHub>
-#define DEVICEID <DeviceId>
+#define IOTHUBNAME      <MyIoTHub>
+#define DEVICEID        <DeviceId>
 #define CERTIFICATEFILE "<pathTo>\\IoTHubRootCA_Baltimore.pem"
-#define PWD "SharedAccessSignature sr=[yourIoTHub].azure-devices.net%2Fdevices%2F[DeviceId]&sig=[tokengeneratedforyourdevice]"
+#define PWD             "SharedAccessSignature sr=[yourIoTHub].azure-devices.net%2Fdevices%2F[DeviceId]&sig=[tokengeneratedforyourdevice]"
 ```
-
-> Note: The SAS token should be used as password see this [article](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-mqtt-support#using-the-mqtt-protocol-directly-as-a-device) for more details on  password, username and configuration needed for using MQTT protocol.
-
-## Key concepts
-
-IoT Hub under the cover is a MQTT server (but not a full MQTT broker as explained [here](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-mqtt-support#using-the-mqtt-protocol-directly-as-a-device)), so by using the MQTT protocol, we can communicate (send and receive messages) with the IoT Hub without using the Azure IoT SDK.
-
-In order to establish a TLS connection, you may need to download and reference the DigiCert Baltimore Root Certificate. This certificate is the one that Azure uses to secure the connection. You can find this certificate in the [Azure-iot-sdk-c](https://github.com/Azure/azure-iot-sdk-c/blob/master/certs/certs.c) repository. More information about these certificates can be found on [Digicert's website](https://www.digicert.com/digicert-root-certificates.htm).
-The client use the certificate to check that the IoT Hub it's connecting to is indeed legit, by providing the public key of the certificate used by Microsoft to secure IoT Hub connections. 
-
-
-You need to secure the communication and provide a certificate to be accepted by the MQTT broker under the Azure IoTHub.
-
-The information/credential needed by the MQTT broker, are the classic pair: user/password, in the case of Azure IoT Hub the password should be the SAS Token, and the username should have this form:
-
-`IOTHUBNAME.azure-devices.net/DEVICEID/?api-version=2018-06-30`
 
 ## Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit <https://cla.opensource.microsoft.com>.
+For details on contributing to this repository, see the [contributing](CONTRIBUTING.md) guide.
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+## Reporting Security Vulnerabilities
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+If you believe you have found a security vulnerability in any Microsoft-owned repository that meets Microsoft's definition of a security vulnerability, please report it to the [Microsoft Security Response Center](SECURITY.md).
