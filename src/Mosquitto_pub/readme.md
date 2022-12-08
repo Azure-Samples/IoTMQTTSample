@@ -1,44 +1,81 @@
-# Mosquitto_pub commands sample
-This folder contains two samples commands used with mosquitto_pub utility tool provided by Mosquitto.org.
+# Mosquitto_pub CLI samples
 
-Mosquitto_sendmessage: to send a simple text mesaage to an Azure IoTHub acting as a device.
+This document contains two samples commands using the `mosquitto_pub` CLI from [Mosquitto](https://mosquitto.org).
 
-Mosquitto_subscribe: to see events occurring in an Azure IoT Hub.
+1. Send a simple text mesaage to an Azure IoTHub acting as a device
+1. See events within an Azure IoT Hub
 
-## Setup
-Install Mosquitto lib on your machine. These 2 commands can be used on Windows or Linux.
-Use apt-get on Linux and vcpkg on windows to install the tool (see readme in Linux and Windows directory to learn how to setup Mosquitto on the platform you want)
+## Prerequisites
 
-## Run
-Update the SAS token in the command. (see readme at the root at this repository to learn how to generate a SAS token for your IoTHub)
-Update the IoThub name <MyHub> and device name <MyDevice>
-Copy and paste the command to a command line and run it.
+The following steps must be complete before running the samples below:
 
-send a message:
+1. Install [Mosquitto](https://mosquitto.org/download) to your target machine
+    > Confirm that `mosquitto_pub` is in your system path
+1. Install the [Aazure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+1. [Provision an IoT Hub](https://learn.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal) in your Azure subscription
+1. [Create a device](https://learn.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal#register-a-new-device-in-the-iot-hub) within your IoT Hub
+1. [Generate a SAS token](https://docs.microsoft.com/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-generate-sas-token) for the device
+1. Run the following commands in the repository root for easier access to the Root CA's
 
-`mosquitto_pub -d -h <MyHub>.azure-devices.net -p 8883 -i <MyDevice> -u "<MyHub>.azure-devices.net/<MyDevice>/?api-version=2018-06-30" -P "<SAS Token for <MyDevice>" -t "devices/<MyDevice>/messages/events/" -m "hello world" -V mqttv311 --cafile <Certificate.pem> -q 1`
+## Variable substitution
 
+The following variables will need to be expanded in the following samples:
 
-subscribe to events:
+| Variable | Description |
+|-|-|
+| iothub_name | The name of the created IoT Hub |
+| device_id | The name of the device created in the IoT Hub |
+| sas_token | The SAS token generated for the device |
+| certificate_pem | The Root CA used to validate the IoT Hub |
 
-`mosquitto_sub -d -h <MyHUB>.azure-devices.net -p 8883 -i EM_MXC3166 -u "<MyHUB>.azure-devices.net/<DEviceId>/?api-version=2018-06-30" -P "SharedAccessSignature sr=<MyHUB>.azure-devices.net%2Fdevices%2F<DeviceId>&sig=T768rIqQVq6zVBL7FeWAYqak7tTeslu%MCMG639zX492o%3D&se=1568424250" -t "#"  -V mqttv311 --cafile IoTHubRootCA_Baltimore.pem -q 1`
+## Root CA 
 
-## Validate your code
+> **NOTE:** Azure IoT services are moving to a new CA Root. See [here](http://aka.ms/iot-ca-updates) for details.
 
-### When sending message
+The following certificates are provided in repository root:
 
-Open an Azure CLI and execute:
+| Certificate | Path | Description |
+|-|-|-|
+| [Baltimore CyberTrust Root](https://www.digicert.com/kb/digicert-root-certificates.htm) | IoTHubRootCA_Baltimore.pem | Current Root CA set to **expire in 2025** |
+| [DigiCert Global Root G2](https://www.digicert.com/kb/digicert-root-certificates.htm) | DigiCertGlobalRootG2.crt.pem | Future Root CA which will become active in Feb 2023 |
 
-`az iot hub monitor-events --hub-name <your IoT Hub name> --output table`
+## Send a message
 
-You should see something like:
+1. Start monitoring incoming messages on your Hub:
+    ```Shell
+    az iot hub monitor-events --hub-name {iothub_name} --output table
+    ```
 
-![Az CLI](https://github.com/Azure-Samples/IoTMQTTSample/blob/master/src/AZ_CLI.JPG)
+1. From a second terminal, send a message from the device:
+    ```Shell
+    mosquitto_pub -d -h {iothub_name}.azure-devices.net -p 8883 -i {device_id} -u "{iothub_name}.azure-devices.net/{device_id}/?api-version=2018-06-30" -P "{sas_token}>" -t "devices/{device_id}/messages/events/" -m "hello world" -V mqttv311 --cafile {certificate_pem} -q 1
+    ```
 
-### When subscribing to IoT Hub events
-Open an Azure CLI and run the following command to send a message: 
-`az iot device c2d-message send --device-id <your device id> --hub-name <your IoT Hub name> --data <your message here>`
+3. Confirm the following output is seen from the monitor-events command:
+    ```
+    event:
+      component: ''
+      interface: ''
+      module: ''
+      origin: pubsub
+      payload: hello world    
+    ```
 
-You should see something like:
+## Subscribe to events
 
-![Az CLI](https://github.com/Azure-Samples/IoTMQTTSample/blob/master/src/AZ_CLI_2.JPG)
+1. Subscribe the device to events
+    ```Shell
+    mosquitto_sub -d -h {iothub_name}.azure-devices.net -p 8883 -i {device_id} -u "{iothub_name}.azure-devices.net/{device_id}/?api-version=2018-06-30" -P "{sas_token}" -t "#" -V mqttv311 --cafile {certificate_pem} -q 1
+    ```
+
+2. Send a message from the Hub to the device:
+    ```Shell
+    az iot device c2d-message send --device-id {device_id} --hub-name {iothub_name} --data "hello world"
+    ```
+
+3. Confirm the following output from the mosquitto_sub command:
+    ```
+    Client pubsub received PUBLISH (d0, q1, r0, m2, 'devices/pubsub/messages/devicebound/%24.mid=2c2db32a-9c41-4073-baa4-db584e021573&%24.to=%2Fdevices%2Fpubsub%2Fmessages%2Fdevicebound&%24.ce=utf-8&iothub-ack=none', ... (11 bytes))  
+    Client pubsub sending PUBACK (m2, rc0)
+    hello world
+    ```
