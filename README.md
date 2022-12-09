@@ -32,8 +32,8 @@ For more information, refer to the [Overview of Azure IoT Device SDKs](https://d
 This repository contains the following samples:
 * [Python](src/Python)
 * [Mosquitto_pub CLI](src/Mosquitto_pub)
-* [Mosquitto on Windows](src/Windows)
 * [Mosquitto on Linux](src/Linux)
+* [Mosquitto on Windows](src/Windows)
 
 ## Root certificates
 
