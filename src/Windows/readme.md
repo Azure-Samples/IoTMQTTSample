@@ -4,16 +4,16 @@ These samples uses the Mosquitto (MQTT) library to send a message and subscribe 
 
 There are four samples in this folder:
 
-1. TelemetryMQTTWin32: Send a telemetry message to an Azure IoT Hub to build and run on a Windows machine.
-1. SubscribeMQTTWin32: Subscribe to events of a given IoT Hub on a Windows machine.
-1. DeviceTwinMQTTWin32: Query and subscribe to the device twin events of a device in the Azure IoT Hub on a Windows machine.
-1. PnPMQTTWin32: Send a telemetry message with PnP Device capabilities to an Azure IoT Hub to build and run on a Windows machine.
+1. **TelemetryMQTTWin32**: Send a telemetry message to an Azure IoT Hub to build and run on a Windows machine.
+1. **SubscribeMQTTWin32**: Subscribe to events of a given IoT Hub on a Windows machine.
+1. **DeviceTwinMQTTWin32**: Query and subscribe to the device twin events of a device in the Azure IoT Hub on a Windows machine.
+1. **PnPMQTTWin32**: Send a telemetry message with PnP Device capabilities to an Azure IoT Hub to build and run on a Windows machine.
 
 ## Prerequisites
 
 1. Follow the [general prerequisites](/README.md#general-rerequisites)
 1. Install [Visual Studio](https://visualstudio.microsoft.com/downloads)
-    * Enable the 'Desktop development with C++' Workload.
+    * Enable the `Desktop development with C++` Workload.
 Enable
 1. Install [vcpkg](https://vcpkg.io/en/getting-started.html):
 
