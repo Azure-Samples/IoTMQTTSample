@@ -1,67 +1,66 @@
-# Using MQTT with Azure IoTHub without SDK on Windows
+# Using MQTT with Azure IoT Hub Windows
 
 These samples uses the Mosquitto (MQTT) library to send a message and subscribe to events to an Azure IoT Hub from Windows.
 
-There are three samples in this folder:
+There are four samples in this folder:
 
-- TelemetryMQTTWin32: contains code to send a telemetry message to an Azure IoT Hub to build and run on a Windows machine.
-- SubscribeMQTTWin32: contains code to subscribe to events of a given IoT Hub on a Windows machine.
-- DeviceTwinMQTTWin32: contains code to query and subscribe to the device twin events of a device in the Azure IoT Hub on a Windows machine.
-- PnPMQTTWin32: contains code to send a telemetry message with PnP Device capabilities to an Azure IoT Hub to build and run on a Windows machine. 
+1. TelemetryMQTTWin32: Send a telemetry message to an Azure IoT Hub to build and run on a Windows machine.
+1. SubscribeMQTTWin32: Subscribe to events of a given IoT Hub on a Windows machine.
+1. DeviceTwinMQTTWin32: Query and subscribe to the device twin events of a device in the Azure IoT Hub on a Windows machine.
+1. PnPMQTTWin32: Send a telemetry message with PnP Device capabilities to an Azure IoT Hub to build and run on a Windows machine.
 
-## Prerequisite
+## Prerequisites
 
-On Windows with Visual Studio, use [vcpkg](https://github.com/Microsoft/vcpkg) package for installing Mosquitto.
-Clone the vcpkg repository and build the tool:
+1. Follow the [general prerequisites](/README.md#general-rerequisites)
+1. Install [Visual Studio](https://visualstudio.microsoft.com/downloads)
+    * Enable the 'Desktop development with C++' Workload.
+Enable
+1. Install [vcpkg](https://vcpkg.io/en/getting-started.html):
 
-```cmd
-git clone https://github.com/Microsoft/vcpkg.git
-cd vcpkg
+    ```cmd
+    git clone https://github.com/Microsoft/vcpkg.git
+    cd vcpkg
+    .\bootstrap-vcpkg.bat
+    .\vcpkg integrate install
+    ```
 
-PS> .\bootstrap-vcpkg.bat
+1. Install the Mosquitto library package (this may take a while):
+
+    ```cmd
+    .\vcpkg install mosquitto:x64-windows
+    ```
+
+> **Note**
+>  Check carefully if you are installing x64 or x86 version of the library. The project should target the same platform. Additional tools from mosquitto, like mosquitto_pub, are installed by vcpkg in the `{vcpkg_root_dir}\buildtrees\mosquitto\x64-windows-rel\client` folder.
+
+## Build
+
+1. Open the `MQTTWin32.sln` solution in Visual Studio.
+1. Edit the cpp file associated with the project you wish to run and add the required connection information:
+
+   ```c
+   #define IOTHUBNAME      "{iothub_name}"
+   #define DEVICEID        "{device_id}"
+   #define SAS_TOKEN       "{sas_token}"
+   #define CERTIFICATEFILE "IoTHubRootCA_Baltimore.pem"
+   ```
+
+1. Press `CTRL-SHIFT-B` to build the entire solution
+
+## Run
+
+1. Right click on the project you wish to run and select `Debug | Start New Instance`
+
+## Validate
+
+To monitor messages at the IoT Hub, use the following command:
+
+```Cmd
+az iot hub monitor-events -n {iothub_name}
 ```
 
-Then, to enable user-wide [integration](docs/users/integration.md), run (note requires admin on first use)
+When subscribing to IoT Hub events on your device:
 
-```cmd
-PS> .\vcpkg integrate install
+```Cmd
+az iot device c2d-message send --hub-name {iothub_name} --device-id {device_id} --data "hello world"
 ```
-
-Once the vcpkg package is cloned on your machine, run the following commands:
-
-`.\vcpkg install mosquitto:x64-windows`
-
-> Note: Please check carefully if you are installing x64 or x86 version of the library. Your project should target the same platform. Additional tools from mosquitto, like mosquitto_pub, are installed by vcpkg in this folder: [vcpkg_root_dir]\buildtrees\mosquitto\x64-windows-rel\client
-
-## Setup
-
-Clone the current [github repository]( https://github.com/Azure-Samples/IoTMQTTSample) on your machine.
-
-Open the solution file MQTTWin32.sln in Visual Studio 2019 (you need to install "Desktop Development with C++" workload)
-
-## Running the code
-
-Build and run the code (Crtl+F5 or just F5 to debug)
-
-## Validate your code
-
-### When sending message
-
-Open an Azure CLI and execute:
-
-`az iot hub monitor-events --hub-name <your IoT Hub name> --output table`
-
-You should see something like:
-
-![Az CLI](https://github.com/Azure-Samples/IoTMQTTSample/blob/master/src/AZ_CLI.JPG)
-
-
-### When subscribing to IoT Hub events
-
-
-Open an Azure CLI and run the following command to send a message: 
-`az iot device c2d-message send --device-id <your device id> --hub-name <your IoT Hub name> --data <your message here>`
-
-You should see something like:
-
-![Az CLI](https://github.com/Azure-Samples/IoTMQTTSample/blob/master/src/AZ_CLI_2.JPG)

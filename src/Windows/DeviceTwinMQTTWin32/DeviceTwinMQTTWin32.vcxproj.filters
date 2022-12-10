@@ -18,13 +18,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="..\..\..\IoTHubRootCA_Baltimore.pem">
-      <Filter>Shared</Filter>
-    </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="DeviceTwinMQTTWin32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\..\IoTHubRootCA_Baltimore.pem">
+      <Filter>Shared</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\..\DigiCertGlobalRootG2.crt.pem">
+      <Filter>Shared</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

@@ -6,9 +6,9 @@ from hmac import HMAC
 from hashlib import sha256
 from ssl import SSLContext, PROTOCOL_TLS_CLIENT, CERT_REQUIRED
 
-IOT_HUB_HOSTNAME  = "azuregsg.azure-devices.net"
-IOT_HUB_DEVICE_ID = "python2"
-IOT_HUB_SAS_KEY   = "YTMffA4TW0SHZ5fXmoySuKzWYifrnK0Y0NOqaQaan38="
+IOT_HUB_HOSTNAME  = ""
+IOT_HUB_DEVICE_ID = ""
+IOT_HUB_SAS_KEY   = ""
 
 def on_connect(mqtt_client, obj, flags, rc):
     print("connect: " + str(rc))

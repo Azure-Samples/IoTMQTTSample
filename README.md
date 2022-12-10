@@ -30,59 +30,35 @@ For more information, refer to the [Overview of Azure IoT Device SDKs](https://d
 ## Samples in this repo
 
 This repository contains the following samples:
-* [Mosquitto on Windows](src/Windows)
-* [Mosquitto on Linux](src/Linux)
-* [Mosquitto_pub CLI](src/Mosquitto_pub)
 * [Python](src/Python)
+* [Mosquitto_pub CLI](src/Mosquitto_pub)
+* [Mosquitto on Linux](src/Linux)
+* [Mosquitto on Windows](src/Windows)
 
-## Prerequisites
+## Root certificates
 
-To be able to test these samples will need:
-1. An Azure IoT Hub
-1. A registered device
-1. The Eclipse Mosquitto library (for some samples)
+> **Note**
+> Azure IoT services are moving to a new CA root, see [here](http://aka.ms/iot-ca-updates) for details.
 
-### Creating an Azure IoT Hub
+The following root certificates are provided in the repository root:
 
-To create an Azure IoT Hub, [follow these steps](https://docs.microsoft.com/azure/iot-hub/iot-hub-create-through-portal).
+| Certificate | Path | Description |
+|-|-|-|
+| [Baltimore CyberTrust Root](https://www.digicert.com/kb/digicert-root-certificates.htm) | IoTHubRootCA_Baltimore.pem | Current Root CA set to **expire in 2025** |
+| [DigiCert Global Root G2](https://www.digicert.com/kb/digicert-root-certificates.htm) | DigiCertGlobalRootG2.crt.pem | Future Root CA which will become active in Feb 2023 |
 
-### Registering a device
+## General Prerequisites
 
-To register a new device and retrieve the connection information, [follow these steps](https://docs.microsoft.com/azure/iot-hub/iot-hub-create-through-portal#register-a-new-device-in-the-iot-hub).
+To be able to run these samples the following general prerequisites are needed:
+1. Clone this repository
+1. Install the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+1. [Provision an IoT Hub](https://learn.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal) in your Azure subscription
+1. [Register a device](https://learn.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal#register-a-new-device-in-the-iot-hub) within your IoT Hub
+1. [Generate a SAS token](https://docs.microsoft.com/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-generate-sas-token) for the device using the Azure CLI
+    > **Note**
+    > By default the **SAS Token is valid for 60 minutes**. Use the --du parameter to increases if needed. 
 
-## Mosquitto Prerequisites
-
-For Mosquitto samples, you will need:
-1. Install the Eclipse Mosquitto library
-1. Generate SAS token
-1. Complete the connection information
-
-### Installing Eclipse Mosquitto
-
-The Eclipse Mosquitto library and documentation are available at <https://mosquitto.org>.
-
-> **NOTE:** If you use the mosquitto.org installer, only the files (header and lib) are needed for these samples, you can uncheck the service installation.
-
-It is easier to use apt-get on Linux or vcpkg on Windows for installing Eclipse Mosquitto on your machine (see the corresponding readme in Linux and Windows directories).
-
-### Generate SAS token
-
-To get a valid IoT Hub SAS token, follow the instructions use the [generate-sas-token](https://docs.microsoft.com/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-generate-sas-token) function from AZ CLI.
-
-> **NOTE:** By default the **SAS Token is valid for 60 minutes**. Use the --du parameter to increases the duration if needed.
-
-### Complete connection information
-
-You will need to provide connection information and a [root certificate](IoTHubRootCA_Baltimore.pem).
-
-In the code, complete the connection information:
-
-```c
-#define IOTHUBNAME      <MyIoTHub>
-#define DEVICEID        <DeviceId>
-#define CERTIFICATEFILE "<pathTo>\\IoTHubRootCA_Baltimore.pem"
-#define PWD             "SharedAccessSignature sr=[yourIoTHub].azure-devices.net%2Fdevices%2F[DeviceId]&sig=[tokengeneratedforyourdevice]"
-```
+Additional prerequisites may be required by each individual sample.
 
 ## Contributing
 
