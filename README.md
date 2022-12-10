@@ -30,6 +30,7 @@ For more information, refer to the [Overview of Azure IoT Device SDKs](https://d
 ## Samples in this repo
 
 This repository contains the following samples:
+
 * [Python](src/Python)
 * [Mosquitto_pub CLI](src/Mosquitto_pub)
 * [Mosquitto on Linux](src/Linux)
@@ -56,7 +57,7 @@ To be able to run these samples the following general prerequisites are needed:
 1. [Register a device](https://learn.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal#register-a-new-device-in-the-iot-hub) within your IoT Hub
 1. [Generate a SAS token](https://docs.microsoft.com/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-generate-sas-token) for the device using the Azure CLI
     > **Note**
-    > By default the **SAS Token is valid for 60 minutes**. Use the --du parameter to increases if needed. 
+    > By default the **SAS Token is valid for 60 minutes**. Use the --du parameter to increase if needed.
 
 Additional prerequisites may be required by each individual sample.
 
