@@ -60,26 +60,6 @@ To be able to run these samples the following general prerequisites are needed:
 
 Additional prerequisites may be required by each individual sample.
 
-## Mosquitto Prerequisites
-
-For Mosquitto samples, you will need:
-1. Install the Eclipse Mosquitto library
-1. Generate SAS token
-1. Complete the connection information
-
-## Complete connection information
-
-You will need to provide connection information and a [root certificate](IoTHubRootCA_Baltimore.pem).
-
-In the code, complete the connection information:
-
-```c
-#define IOTHUBNAME      <MyIoTHub>
-#define DEVICEID        <DeviceId>
-#define CERTIFICATEFILE "<pathTo>\\IoTHubRootCA_Baltimore.pem"
-#define PWD             "SharedAccessSignature sr=[yourIoTHub].azure-devices.net%2Fdevices%2F[DeviceId]&sig=[tokengeneratedforyourdevice]"
-```
-
 ## Contributing
 
 For details on contributing to this repository, see the [contributing](CONTRIBUTING.md) guide.

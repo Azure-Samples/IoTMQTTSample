@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29306.81
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SubscribeMQTTWin32", "SubscribeMQTTWin32\SubscribeMQTTWin32.vcxproj", "{D7763B76-A7B4-4F4C-86FF-C7F645AC2454}"
 EndProject
@@ -10,8 +10,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TelemetryMQTTWin32", "TelemetryMQTTWin32\TelemetryMQTTWin32.vcxproj", "{7BDC902B-D5CD-492C-AB87-DBD4C5007928}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PnPMQTTWin32", "PnPMQTTWin32\PnPMQTTWin32.vcxproj", "{96E890E2-43F9-429F-8408-B5966463A885}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PnPMQTTWin32-Before", "PnPMQTTWin32-Before\PnPMQTTWin32-Before.vcxproj", "{6E1372EA-FBD8-4142-97DC-1B6A5BB87EFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,14 +51,6 @@ Global
 		{96E890E2-43F9-429F-8408-B5966463A885}.Release|x64.Build.0 = Release|x64
 		{96E890E2-43F9-429F-8408-B5966463A885}.Release|x86.ActiveCfg = Release|Win32
 		{96E890E2-43F9-429F-8408-B5966463A885}.Release|x86.Build.0 = Release|Win32
-		{6E1372EA-FBD8-4142-97DC-1B6A5BB87EFA}.Debug|x64.ActiveCfg = Debug|x64
-		{6E1372EA-FBD8-4142-97DC-1B6A5BB87EFA}.Debug|x64.Build.0 = Debug|x64
-		{6E1372EA-FBD8-4142-97DC-1B6A5BB87EFA}.Debug|x86.ActiveCfg = Debug|Win32
-		{6E1372EA-FBD8-4142-97DC-1B6A5BB87EFA}.Debug|x86.Build.0 = Debug|Win32
-		{6E1372EA-FBD8-4142-97DC-1B6A5BB87EFA}.Release|x64.ActiveCfg = Release|x64
-		{6E1372EA-FBD8-4142-97DC-1B6A5BB87EFA}.Release|x64.Build.0 = Release|x64
-		{6E1372EA-FBD8-4142-97DC-1B6A5BB87EFA}.Release|x86.ActiveCfg = Release|Win32
-		{6E1372EA-FBD8-4142-97DC-1B6A5BB87EFA}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,3 +8,4 @@ IndentCaseLabels: true
 PointerAlignment: Left
 BraceWrapping:
   AfterCaseLabel: true
+ColumnLimit: 150
