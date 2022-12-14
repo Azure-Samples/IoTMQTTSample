@@ -32,7 +32,11 @@ The following steps must be complete before running the samples below:
    ```
 
 1. Build the application:
-   > `g++ Shared/MQTT_Mosquitto.cpp -lmosquitto -o mqttlinux`
+
+    ```Shell
+    cd src
+    g++ Shared/MQTT_Mosquitto.cpp -lmosquitto -o mqttlinux
+    ```
 
 ## Run
 

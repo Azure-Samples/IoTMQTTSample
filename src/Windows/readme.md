@@ -14,7 +14,6 @@ There are four samples in this folder:
 1. Follow the [general prerequisites](/README.md#general-rerequisites)
 1. Install [Visual Studio](https://visualstudio.microsoft.com/downloads)
     * Enable the `Desktop development with C++` Workload.
-Enable
 1. Install [vcpkg](https://vcpkg.io/en/getting-started.html):
 
     ```cmd
