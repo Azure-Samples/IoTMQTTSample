@@ -31,10 +31,9 @@ For more information, refer to the [Overview of Azure IoT Device SDKs](https://d
 
 This repository contains the following samples:
 
-* [Python](src/Python)
-* [Mosquitto_pub CLI](src/Mosquitto_pub)
-* [Mosquitto on Linux](src/Linux)
-* [Mosquitto on Windows](src/Windows)
+* [Mosquitto](mosquitto)
+* [Mosquitto_pub](mosquitto_pub)
+* [Python](python)
 
 ## Root certificates
 
@@ -45,7 +44,7 @@ The following root certificates are provided in the repository root:
 
 | Certificate | Path | Description |
 |-|-|-|
-| [Baltimore CyberTrust Root](https://www.digicert.com/kb/digicert-root-certificates.htm) | IoTHubRootCA_Baltimore.pem | Current Root CA set to **expire in 2025** |
+| [Baltimore CyberTrust Root](https://www.digicert.com/kb/digicert-root-certificates.htm) | BaltimoreCyberTrustRoot.crt.pem | Current Root CA set to **expire in 2025** |
 | [DigiCert Global Root G2](https://www.digicert.com/kb/digicert-root-certificates.htm) | DigiCertGlobalRootG2.crt.pem | Future Root CA which will become active in Feb 2023 |
 
 ## General Prerequisites
