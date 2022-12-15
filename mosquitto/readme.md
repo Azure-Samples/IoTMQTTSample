@@ -58,6 +58,8 @@ This samples uses the Mosquitto (MQTT) library to send a message to an Azure IoT
 
 ### Telemetry sample
 
+This sample will send a single telemetry message, which can be viewed by monitoring the Hubs events.
+
 1. Start monitoring incoming messages on your Hub:
 
     ```Shell
@@ -86,6 +88,8 @@ This samples uses the Mosquitto (MQTT) library to send a message to an Azure IoT
 
 ### Subscribe sample
 
+This sample will subscribe to all available MQTT topics, and then display an cloud-to-device message sent from the Hub.
+
 1. Run the sample executable:
 
     ```Shell
@@ -107,6 +111,8 @@ This samples uses the Mosquitto (MQTT) library to send a message to an Azure IoT
     ```
     
 ### Device twin sample
+
+This sample will add a temperature reported property to the device twin, and then read the property back.
 
 1. Run the sample executable:
 
