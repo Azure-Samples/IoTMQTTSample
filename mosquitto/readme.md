@@ -54,7 +54,9 @@ This samples uses the Mosquitto (MQTT) library to send a message to an Azure IoT
     1. Linux: `./build`
     1. Windows `.\build\Debug`
 
-## Run telemetry sample
+## Run
+
+### Telemetry sample
 
 1. Start monitoring incoming messages on your Hub:
 
@@ -82,7 +84,7 @@ This samples uses the Mosquitto (MQTT) library to send a message to an Azure IoT
     }
     ```
 
-## Run subscribe sample
+### Subscribe sample
 
 1. Run the sample executable:
 
@@ -104,7 +106,7 @@ This samples uses the Mosquitto (MQTT) library to send a message to an Azure IoT
     Got message for devices/pubsub/messages/# topic
     ```
     
-## Run device twin sample
+### Device twin sample
 
 1. Run the sample executable:
 
