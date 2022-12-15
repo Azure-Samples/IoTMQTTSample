@@ -1,6 +1,6 @@
-# Using the Mosquitto library on Linux
+# Using the Mosquitto library
 
-This samples uses the Mosquitto (MQTT) library to send a message to an Azure IoT Hub from a Linux machine.
+This samples uses the Mosquitto (MQTT) library to send a message to an Azure IoT Hub.
 
 ## Windows prerequisites
 
