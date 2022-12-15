@@ -4,6 +4,44 @@ This samples uses the Mosquitto (MQTT) library to send a message to an Azure IoT
 
 ## Windows prerequisites
 
+<details>
+<summary>Windows</summary>
+<p>
+1. Follow the [general prerequisites](/README.md#general-rerequisites)
+1. Install [Visual Studio](https://visualstudio.microsoft.com/downloads)
+ 
+    > **NOTE**
+    > Enable the `Desktop development with C++` workload
+
+1. Install [CMake](https://cmake.org/download/)
+
+    > **NOTE**
+    > Enable the `Add CMake to the system PATH for all users` option
+
+1. Install the **x64 version** of [Mosquitto](https://mosquitto.org/download/)
+</p>
+</details>
+
+<details>
+<summary>Linux</summary>
+<p>
+1. Follow the [general prerequisites](/README.md#general-rerequisites)
+1. Install the build tools:
+
+    ```Shell
+   sudo apt install cmake g++
+    ```
+
+1. Install Mosquitto client library:
+
+    ```Shell
+    sudo apt install libmosquitto-dev
+    ```
+</p>
+</details>
+
+## Windows prerequisites
+
 1. Follow the [general prerequisites](/README.md#general-rerequisites)
 1. Install [Visual Studio](https://visualstudio.microsoft.com/downloads)
  
