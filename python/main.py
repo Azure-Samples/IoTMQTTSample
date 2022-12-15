@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 import paho.mqtt.client as mqtt
 from base64 import b64encode, b64decode
 from time import time, sleep
