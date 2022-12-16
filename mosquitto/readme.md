@@ -32,9 +32,24 @@ This samples uses the Mosquitto (MQTT) library to send a message to an Azure IoT
     sudo apt install libmosquitto-dev
     ```
 
+## Variable substitions
+
+The following variables will need to be expanded in the samples:
+
+| Variable | Description | Example |
+|-|-|-|
+| iothub_name | The name of the created IoT Hub (**NOT FQDN/HostName**) | *iothub*
+| device_id | The name of the device created in the IoT Hub | *mosquitto_pub*
+| sas_token | The SAS token [generated](https://learn.microsoft.com/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-generate-sas-token) for the device | *SharedAccessSignature sr=\*.azure-devices.net%2Fdevices%2F\*&sig=\**
+
 ## Build
 
 1. Change to the `mosquitto` directory in the cloned repository
+
+    ```Shell
+    cd mosquitto
+    ```
+ 
 1. Edit the `config.h` file and expand the required connection information:
 
    ```c
@@ -77,7 +92,7 @@ This sample will send a single telemetry message, which can be viewed by monitor
     ```json
     {
         "event": {
-            "origin": "pubsub",
+            "origin": "*",
             "module": "",
             "interface": "",
             "component": "",
@@ -106,10 +121,10 @@ This sample will subscribe to all available MQTT topics, and then display an clo
 
     ```Shell
     Waiting for C2D messages...
-    C2D message 'hello world' for topic 'devices/pubsub/messages/devicebound/...`
-    Got message for devices/pubsub/messages/# topic
+    C2D message 'hello world' for topic 'devices/*/messages/devicebound/...`
+    Got message for devices/*/messages/# topic
     ```
-    
+
 ### Device twin sample
 
 This sample will add a temperature reported property to the device twin, and then read the property back.

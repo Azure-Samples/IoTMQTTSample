@@ -31,8 +31,8 @@ For more information, refer to the [Overview of Azure IoT Device SDKs](https://d
 
 This repository contains the following samples:
 
-* [Mosquitto](mosquitto)
-* [Mosquitto_pub](mosquitto_pub)
+* [Mosquitto client library](mosquitto)
+* [Mosquitto_pub CLI](mosquitto_pub)
 * [Python](python)
 
 ## Root certificates
@@ -44,17 +44,25 @@ The following root certificates are provided in the repository root:
 
 | Certificate | Path | Description |
 |-|-|-|
-| [Baltimore CyberTrust Root](https://www.digicert.com/kb/digicert-root-certificates.htm) | BaltimoreCyberTrustRoot.crt.pem | Current Root CA set to **expire in 2025** |
+| [Baltimore CyberTrust Root](https://www.digicert.com/kb/digicert-root-certificates.htm) | BaltimoreCyberTrustRoot.crt.pem | **NOT recommended for use** since [IoT Hub migration out of Baltimore](https://techcommunity.microsoft.com/t5/internet-of-things-blog/azure-iot-tls-critical-changes-are-almost-here-and-why-you/ba-p/2393169) is set to start on Feb 2023.
 | [DigiCert Global Root G2](https://www.digicert.com/kb/digicert-root-certificates.htm) | DigiCertGlobalRootG2.crt.pem | Future Root CA which will become active in Feb 2023 |
 
 ## General Prerequisites
 
 To be able to run these samples the following general prerequisites are needed:
-1. Clone this repository
+
+1. Clone this repository (Install [Git](https://git-scm.com/downloads))
+1. Change into the cloned directory:
+
+```
+    cd IoTMQTTSample
+```
+
 1. Install the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 1. [Provision an IoT Hub](https://learn.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal) in your Azure subscription
 1. [Register a device](https://learn.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal#register-a-new-device-in-the-iot-hub) within your IoT Hub
-1. [Generate a SAS token](https://docs.microsoft.com/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-generate-sas-token) for the device using the Azure CLI
+1. [Generate a SAS token](https://learn.microsoft.com/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-generate-sas-token) for the device using the Azure CLI
+
     > **Note**
     > By default the **SAS Token is valid for 60 minutes**. Use the --du parameter to increase if needed.
 
