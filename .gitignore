@@ -332,5 +332,3 @@ ASALocalRun/
 
 # VSCode
 .vscode
-*.pem # force add any cert files you want committed, but by default we won't automatically include them
-src/Shared/MQTT_MosquittoDirectCall.cpp
