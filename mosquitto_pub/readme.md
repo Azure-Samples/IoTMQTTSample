@@ -23,10 +23,9 @@ The following variables will need to be expanded in the samples:
 
 | Variable | Description | Example |
 |-|-|-|
-| iothub_name | The name of the created IoT Hub (**NOT FQDN/HostName**) | *iothub*
+| iothub_name | The name of the created IoT Hub (**NOT the FQDN/HostName**) | *iothub*
 | device_id | The name of the device created in the IoT Hub | *mosquitto_pub*
 | sas_token | The SAS token [generated](https://learn.microsoft.com/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-generate-sas-token) for the device | *SharedAccessSignature sr=\*.azure-devices.net%2Fdevices%2F\*&sig=\**
-| certificate_pem | The [Root CA](/README.md#root-certificates) used to validate the IoT Hub | *DigiCertGlobalRootG2.crt.pem*
 
 ## Send a message
 
@@ -39,7 +38,7 @@ The following variables will need to be expanded in the samples:
 1. From a second terminal, send a message from the device:
 
     ```Shell
-    mosquitto_pub -d -h {iothub_name}.azure-devices.net -p 8883 -i {device_id} -u "{iothub_name}.azure-devices.net/{device_id}/?api-version=2018-06-30" -P "{sas_token}" -t "devices/{device_id}/messages/events/" -m "hello world" -V mqttv311 --cafile {certificate_pem} -q 1
+    mosquitto_pub -d -h {iothub_name}.azure-devices.net -p 8883 -i {device_id} -u "{iothub_name}.azure-devices.net/{device_id}/?api-version=2018-06-30" -P "{sas_token}" -t "devices/{device_id}/messages/events/" -m "hello world" --cafile IoTHubRootCA.crt.pem -q 1
     ```
 
 3. Confirm the following output is seen from the monitor-events command:
@@ -47,7 +46,7 @@ The following variables will need to be expanded in the samples:
     ```json
     {
         "event": {
-            "origin": "pubsub",
+            "origin": "*",
             "module": "",
             "interface": "",
             "component": "",
@@ -61,7 +60,7 @@ The following variables will need to be expanded in the samples:
 1. Subscribe the device to events
 
     ```Shell
-    mosquitto_sub -d -h {iothub_name}.azure-devices.net -p 8883 -i {device_id} -u "{iothub_name}.azure-devices.net/{device_id}/?api-version=2018-06-30" -P "{sas_token}" -t "#" -V mqttv311 --cafile {certificate_pem} -q 1
+    mosquitto_sub -d -h {iothub_name}.azure-devices.net -p 8883 -i {device_id} -u "{iothub_name}.azure-devices.net/{device_id}/?api-version=2018-06-30" -P "{sas_token}" -t "#" --cafile IoTHubRootCA.crt.pem -q 1
     ```
 
 2. Send a message from the Hub to the device:

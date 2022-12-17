@@ -5,4 +5,4 @@
 #define DEVICEID   "{device_id}"
 #define SAS_TOKEN  "{sas_token}"
 
-#define CERTIFICATEFILE "../BaltimoreCyberTrustRoot.crt.pem"
+#define CERTIFICATEFILE CERT_PATH "IoTHubRootCA.crt.pem"

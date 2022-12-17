@@ -38,14 +38,15 @@ This repository contains the following samples:
 ## Root certificates
 
 > **Note**
-> Azure IoT services are moving to a new CA root, see [here](http://aka.ms/iot-ca-updates) for details.
+> Azure IoT services are moving to a new CA root, [see here](http://aka.ms/iot-ca-updates) for details.
 
-The following root certificates are provided in the repository root:
+This repository provides the file `IoTHubRootCA.cert.pem` which contains the following root certificates:
 
-| Certificate | Path | Description |
-|-|-|-|
-| [Baltimore CyberTrust Root](https://www.digicert.com/kb/digicert-root-certificates.htm) | BaltimoreCyberTrustRoot.crt.pem | **NOT recommended for use** since [IoT Hub migration out of Baltimore](https://techcommunity.microsoft.com/t5/internet-of-things-blog/azure-iot-tls-critical-changes-are-almost-here-and-why-you/ba-p/2393169) is set to start on Feb 2023.
-| [DigiCert Global Root G2](https://www.digicert.com/kb/digicert-root-certificates.htm) | DigiCertGlobalRootG2.crt.pem | Future Root CA which will become active in Feb 2023 |
+| Certificate | Description |
+|-|-|
+| [Baltimore CyberTrust Root](https://www.digicert.com/kb/digicert-root-certificates.htm) | **NOT recommended** since [IoT Hub migration out of Baltimore](https://techcommunity.microsoft.com/t5/internet-of-things-blog/azure-iot-tls-critical-changes-are-almost-here-and-why-you/ba-p/2393169) will start in Feb 2023
+| [DigiCert Global Root G2](https://www.digicert.com/kb/digicert-root-certificates.htm) | Future Root CA to become active in Feb 2023 |
+|[Microsoft RSA Root Certificate Authority 2017](https://www.microsoft.com/pkiops/docs/repository.htm) | Additional Root recommended to prevent disruption from future changes  |
 
 ## General Prerequisites
 

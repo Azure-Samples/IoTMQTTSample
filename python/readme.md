@@ -13,7 +13,7 @@ The following variables will need to be expanded in the sample:
 
 | Variable | Description | Example |
 |-|-|-|
-| iothub_name | The name of the created IoT Hub (**NOT FQDN/HostName**) | *iothub*
+| iothub_name | The name of the created IoT Hub (**NOT the FQDN/HostName**) | *iothub*
 | device_id | The name of the device created in the IoT Hub | *mosquitto_pub*
 | sas_token | The SAS token [generated](https://learn.microsoft.com/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-generate-sas-token) for the device | *SharedAccessSignature sr=\*.azure-devices.net%2Fdevices%2F\*&sig=\**
 
