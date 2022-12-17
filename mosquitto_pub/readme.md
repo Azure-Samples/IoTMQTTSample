@@ -11,22 +11,23 @@ The following steps must be complete before running the samples below:
 
 1. Follow the [general prerequisites](/README.md#general-rerequisites)
 1. Install [Mosquitto](https://mosquitto.org/download) to your target machine
+
+    > **NOTE**
+    > On Windows, you will need to add the Mosquitto directory to your environment PATH
+
 1. Confirm that `mosquitto_pub` is in your system path
 
 ## Variable substitution
 
-The following variables will need to be expanded in the following samples:
+The following variables will need to be expanded in the samples:
 
-| Variable | Description |
-|-|-|
-| iothub_name | The name of the created IoT Hub |
-| device_id | The name of the device created in the IoT Hub |
-| sas_token | The SAS token generated for the device |
-| certificate_pem | The [Root CA](/README.md#root-certificates) used to validate the IoT Hub |
+| Variable | Description | Example |
+|-|-|-|
+| iothub_name | The name of the created IoT Hub (**NOT the FQDN/HostName**) | *iothub*
+| device_id | The name of the device created in the IoT Hub | *mosquitto_pub*
+| sas_token | The SAS token [generated](https://learn.microsoft.com/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-generate-sas-token) for the device | *SharedAccessSignature sr=\*.azure-devices.net%2Fdevices%2F\*&sig=\**
 
 ## Send a message
-
-1. Change to the `src` directory in the cloned repository directory for easier access to the root certificates
 
 1. Start monitoring incoming messages on your Hub:
 
@@ -37,7 +38,7 @@ The following variables will need to be expanded in the following samples:
 1. From a second terminal, send a message from the device:
 
     ```Shell
-    mosquitto_pub -d -h {iothub_name}.azure-devices.net -p 8883 -i {device_id} -u "{iothub_name}.azure-devices.net/{device_id}/?api-version=2018-06-30" -P "{sas_token}>" -t "devices/{device_id}/messages/events/" -m "hello world" -V mqttv311 --cafile {certificate_pem} -q 1
+    mosquitto_pub -d -h {iothub_name}.azure-devices.net -p 8883 -i {device_id} -u "{iothub_name}.azure-devices.net/{device_id}/?api-version=2018-06-30" -P "{sas_token}" -t "devices/{device_id}/messages/events/" -m "hello world" --cafile IoTHubRootCA.crt.pem -q 1
     ```
 
 3. Confirm the following output is seen from the monitor-events command:
@@ -45,7 +46,7 @@ The following variables will need to be expanded in the following samples:
     ```json
     {
         "event": {
-            "origin": "pubsub",
+            "origin": "*",
             "module": "",
             "interface": "",
             "component": "",
@@ -59,13 +60,13 @@ The following variables will need to be expanded in the following samples:
 1. Subscribe the device to events
 
     ```Shell
-    mosquitto_sub -d -h {iothub_name}.azure-devices.net -p 8883 -i {device_id} -u "{iothub_name}.azure-devices.net/{device_id}/?api-version=2018-06-30" -P "{sas_token}" -t "#" -V mqttv311 --cafile {certificate_pem} -q 1
+    mosquitto_sub -d -h {iothub_name}.azure-devices.net -p 8883 -i {device_id} -u "{iothub_name}.azure-devices.net/{device_id}/?api-version=2018-06-30" -P "{sas_token}" -t "#" --cafile IoTHubRootCA.crt.pem -q 1
     ```
 
 2. Send a message from the Hub to the device:
 
     ```Shell
-    az iot device c2d-message send --hub-name {iothub_name} --device-id {device_id} --data "hello world"
+    az iot device c2d-message send -n {iothub_name} -d {device_id} --data "hello world"
     ```
 
 3. Confirm the following output from the mosquitto_sub command:
