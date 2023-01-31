@@ -65,7 +65,7 @@ To be able to run these samples the following general prerequisites are needed:
 1. [Generate a SAS token](https://learn.microsoft.com/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-generate-sas-token) for the device using the Azure CLI
 
     > **Note**
-    > By default the **SAS Token is valid for 60 minutes**. Use the --du parameter to increase if needed.
+    > By default the **SAS Token is valid for 60 minutes**. Use the `--du` parameter to increase if needed.
 
 Additional prerequisites may be required by each individual sample.
 
